@@ -1,5 +1,5 @@
 #include "Socket.hpp"
-#include "SocketsApi.hpp"
+//#include "SocketsApi.hpp"
 
 
 #define SERVER_PROTOCOL 	AF_INET 	//IpV4
@@ -27,5 +27,5 @@ class HttpServer
 
 private:
     Socket      _socket;
-    SocketsApi _socket_api;
+    //SocketsApi _socket_api;
 };
