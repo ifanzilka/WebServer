@@ -13,6 +13,7 @@ void AbstractServerApi::Init(std::string& ipaddr, int port)
 	std::cout << PURPLE;
 	std::cout << "Ip address: " << _ipaddr << "\n";
 	std::cout << "Port: " << _port << NORM << "\n";
+	std::cout << "http:://" << _ipaddr << ":" << _port << NORM << "\n";
 
 	/*
 		AF_UNIX, AF_LOCAL- Местная связь
