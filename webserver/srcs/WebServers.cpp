@@ -1,7 +1,8 @@
 #ifndef IRCSERVER
 # define IRCSERVER
-
 #include <WebServers.hpp>
+#include <HttpResponse.hpp>
+
 
 /* Constructos */
 
@@ -151,11 +152,20 @@ void WebServer::Start()
             continue;
         }
             
+        std::string body("<html>\
+<body>\
+<h1>Hello, World!</h1>\
+</body>\
+</html>");
+
 
         reads_fd = this->CheckAndRead();
         if (reads_fd > 1)
         {
+
             
+            ;
+            this->SendInFd(reads_fd, HttpResponse::MakeHTTPRespone(200, "text", body));
             events--;
         }
         
