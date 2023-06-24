@@ -1,14 +1,20 @@
 #include <iostream>
-#include <WebServers.hpp>
+#include <ServerApi.hpp>
+#include <ServerPoll.hpp>
+#include <ServerSelect.hpp>
+#include <ServerKqueue.hpp>
+#include <ServerEpoll.hpp>
+#include <IrcServer.hpp>
+#include <Color.hpp>
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;    
     
-    if (argc > 1)
+    if (argc > 2)
 	{
-        WebServer serv("127.0.0.1", atoi(argv[1]));
+        IrcServer serv(atoi(argv[1]), argv[2]);
 		//ServerSelect  serv("127.0.0.1", atoi(argv[1]));
         //ServerPoll    serv("127.0.0.1", atoi(argv[1]));
         //ServerKqueue  serv("127.0.0.1", atoi(argv[1]));
@@ -39,7 +45,7 @@ int main(int argc, char **argv)
     }
 	else
 	{
-		std::cout << RED"Use: WebServer <port> \n" << F_NONE;
+		std::cout << RED"Use: ircserver <port> <password>\n" << F_NONE;
 	}
 
     return (42);

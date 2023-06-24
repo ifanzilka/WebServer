@@ -7,7 +7,19 @@ INCLUDES = includes
 
 NAME_PROGRAMM = test
 
-SRCS = srcs/WebServer.cpp srcs/Socket.cpp srcs/utils.cpp
+SRCS = srcs/ServerApi.cpp srcs/WebServers.cpp
+ #srcs/Socket.cpp srcs/utils.cpp
+
+SELECT_SRCS = srcs/ServerSelect.cpp
+
+POLL_SRCS = srcs/ServerPoll.cpp
+
+EPOLL_SRCS = srcs/ServerEpoll.cpp
+
+KQUEUE_SRCS = srcs/ServerKqueue.cpp
+
+MAIN_TEST = srcs/MainServerApi.cpp
+
 
 ##**********##
 ### COLORS ###
@@ -32,8 +44,22 @@ END			= \x1b[0m
 UNDERLINE	= \x1b[4m
 REV			= \x1b[7m
 
+MAIN_TEST = test_main.cpp
+
 test:
 	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS)  test_main.cpp -o $(NAME_PROGRAMM)
+
+select:
+	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS) $(SELECT_SRCS) $(MAIN_TEST) -D SELECT -o $(NAME_PROGRAMM)
+	
+poll:
+	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS) $(POLL_SRCS) $(MAIN_TEST) -D POLL -o $(NAME_PROGRAMM)
+
+kqueue:
+	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS) $(KQUEUE_SRCS) $(MAIN_TEST) -D KQUEUE -o $(NAME_PROGRAMM)
+
+epoll:
+	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS) $(EPOLL_SRCS) $(MAIN_TEST) -D EPOLL -o $(NAME_PROGRAMM)
 
 
 clean:
