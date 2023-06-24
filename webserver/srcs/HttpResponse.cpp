@@ -18,6 +18,19 @@ std::string HttpResponse::MakeHTTPRespone(int status, const std::string& content
     return (response_str);
 }
 
+std::string HttpResponse::MakeHTTPRespone(int status, const std::string& content_type, int size)
+{
+    std::ostringstream oss;
+    oss << "HTTP/1.1 " << status << " " << get_status_text(status) << "\r\n";
+    oss << "Content-Type: " << content_type << "\r\n";
+    oss << "Content-Length: " << size << "\r\n";
+    oss << "\r\n";
+
+    std::string response_str = oss.str();
+    //sendall(sockfd, response_str.c_str(), response_str.size());
+    return (response_str);
+}
+
 std::string HttpResponse::get_status_text(int status)
 {
     switch (status)

@@ -10,6 +10,7 @@ public:
     HttpResponse();
 
     static std::string MakeHTTPRespone(int status, const std::string& content_type, const std::string& body);
+    static std::string MakeHTTPRespone(int status, const std::string& content_type,  int size);
 private:
     static std::string get_status_text(int status);
 };

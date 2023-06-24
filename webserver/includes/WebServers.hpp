@@ -36,6 +36,7 @@ class WebServer
         int     CheckDisconnect();
         int     CheckAndRead();
         int     SendInFd(int fd, std::string msg);
+        int     SendInFd(int fd, char* msg, int size);
         void    Start();
 
         

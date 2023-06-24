@@ -208,12 +208,6 @@ int AbstractServerApi::SendInFd(int fd, std::string msg)
 		c_msg += res_send;
 
 	}
-	//send(fd, "\n", 1 , 0);
-	// std::cout << B_GRAY;
-	// std::cout << msg << std::endl; 
-	// std::cout << NORM;
-	//Logger(PURPLE, "Server sended:\n");
-	//Logger(B_GRAY, msg);
 	return (0);
 }
 
@@ -231,7 +225,7 @@ int AbstractServerApi::SendInFd(int fd, const char *msg, size_t size)
 	{
 		std::cout << "send send start\n";
 		res_send = send(fd, c_msg, BUFFER_LEN , 0);
-		std::cout << "send send end\n";
+		std::cout << res_send <<"send send end\n";
 		if (res_send == -1)
 		{
 			ServerError("Send");
