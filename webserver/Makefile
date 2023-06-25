@@ -7,18 +7,18 @@ INCLUDES = includes
 
 NAME_PROGRAMM = test
 
-SRCS = srcs/ServerApi.cpp srcs/WebServers.cpp srcs/HttpResponse.cpp srcs/utils.cpp
+SRCS = srcs/server_kernel/ServerApi.cpp srcs/WebServers.cpp srcs/http/HttpResponse.cpp srcs/utils.cpp
  #srcs/Socket.cpp srcs/utils.cpp
 
-SELECT_SRCS = srcs/ServerSelect.cpp
+SELECT_SRCS = srcs/server_kernel/ServerSelect.cpp
 
-POLL_SRCS = srcs/ServerPoll.cpp
+POLL_SRCS = srcs/server_kernel/ServerPoll.cpp
 
-EPOLL_SRCS = srcs/ServerEpoll.cpp
+EPOLL_SRCS = srcs/server_kernel/ServerEpoll.cpp
 
-KQUEUE_SRCS = srcs/ServerKqueue.cpp
+KQUEUE_SRCS = srcs/server_kernel/ServerKqueue.cpp
 
-MAIN_TEST = srcs/MainServerApi.cpp
+MAIN_TEST = srcs/server_kernel/MainServerApi.cpp
 
 
 ##**********##
