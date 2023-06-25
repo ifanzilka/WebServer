@@ -120,7 +120,8 @@ int	AbstractServerApi::Accept()
 		ServerError("Accept");
 		return (-1);
 	}
-	
+
+
 	GetNameInfo((struct sockaddr *) &clientaddr);
 	
 	AddClient(client_fd, clientaddr, _ipaddr);

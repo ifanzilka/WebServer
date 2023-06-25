@@ -1,8 +1,13 @@
 #include <iostream>
 #include <WebServers.hpp>
+#include <signal.h>
+
+
+
 
 int main(int argc, char **argv)
 {
+    signal(SIGPIPE, SIG_IGN);//Если произошел дисконект не падать
     (void)argc;
     (void)argv;    
     

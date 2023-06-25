@@ -181,16 +181,18 @@ void WebServer::Start()
         }
             
         std::string body("<html>\
-<body>\
-<h1>Hello, World!</h1>\
-</body>\
-</html>");
+                <body>\
+                <h1>Hello, World!</h1>\
+                </body>\
+                </html>");
 
 
         reads_fd = this->CheckAndRead();
         if (reads_fd > 1)
-        {
-            HttpResponse::SendHTTPResponseFile(reads_fd, 200, "video/mp4", "resource/nyan.mp4" );
+        {   
+            //HttpResponse::SendHTTPResponseFile(reads_fd, 200, "image/jpeg", "resource/fera.jpeg");
+            HttpResponse::SendHTTPResponseFile(reads_fd, 200, "video/mp4", "resource/nyan.mp4");
+            
             events--;
         }
         

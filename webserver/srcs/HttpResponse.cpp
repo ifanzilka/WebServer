@@ -32,6 +32,8 @@ std::string HttpResponse::MakeHTTPResponse(int status, const std::string& conten
     return (response_str);
 }
 
+
+
 int HttpResponse::SendHTTPResponseFile(int fd, int status, const std::string& content_type, const std::string& filename)
 {
 
@@ -48,19 +50,24 @@ int HttpResponse::SendHTTPResponseFile(int fd, int status, const std::string& co
     //response = "HTTP/1.1 " + std::to_string(status) + get_status_text(status) + "\r\n";
     set_header(oss, "Content-Type", content_type);
     set_header(oss, "Content-Length", std::to_string(bytes.size()));
-    set_header(oss, "Content-Disposition", "attachment; filename=\"" + filename + "\"");
-    
-    // oss << "Content-Type: " << content_type << "\r\n";
-    // oss << "Content-Length: " << bytes.size() << "\r\n";
+    //set_header(oss, "Content-Disposition", "attachment; filename=\"" + filename + "\"");
+    //response += "r\n";
+
+    //oss << "Content-Type: " << content_type << "\r\n";
+    //oss << "Content-Length: " << bytes.size() << "\r\n";
     // oss << "Content-Disposition: attachment; filename=\"" << filename << "\"\r\n";
     
     oss << "\r\n";
-    //response += "r\n";
+    
 
     response = oss.str();
+    std::cout << response << std::endl;
+    std::cout << bytes.size() << std::endl;
     
     send_bytes_fd(fd, response.c_str(), response.size());
+    
     send_bytes_fd(fd, bytes.c_str(), bytes.size());
+    
     return (0);
 }
 
@@ -79,35 +86,37 @@ std::string HttpResponse::SendBytesHTTPResponse(int fd, const std::string& filen
 
 int send_bytes_fd(int fd, const char *msg, int size)
 {
-	char 	*c_msg = (char *)(const char *)msg;
-	int 	res_send;
-	
-	size_t 	sended = 0;
-	size_t 	len_msg = size;
-	size_t  BUFFER_LEN = BUFFER_SIZE_SEND > size ? size : BUFFER_SIZE_SEND;
-	int     cout_break = 0;
 
-	while (sended < len_msg)
-	{
-		
-		res_send = send(fd, c_msg, BUFFER_LEN , 0);
-		//std::cout << (sended / 1024) / 1024  << "MB\n";
+    char 	*c_msg = (char *)(const char *)msg;
+    int 	res_send;
+    
+    size_t 	sended = 0;
+    size_t 	len_msg = size;
+    size_t  BUFFER_LEN = BUFFER_SIZE_SEND > size ? size : BUFFER_SIZE_SEND;
+    int     cout_break = 0;
+
+    while (sended < len_msg)
+    {
+        res_send = send(fd, c_msg, BUFFER_LEN , 0);
+        std::cout << "\r" << ((sended / 1024.0) / 1024.0)  << " MB";
         if (res_send == -1)
-		{
+        {
+            
             int errno_code =  get_errno_code();
-
+            // std::cout << errno_code << "\n";
+            // std::cout << get_errno() << "\n";
             if (errno_code == EAGAIN)
                 continue;
 
-            
             cout_break += 1;
-			return (-1);
-		}
+            return (-1);
+        }
 
-		sended += res_send;
-		c_msg += res_send;
+        sended += res_send;
+        c_msg += res_send;
 
-	}
+    }
+    
 	return (0);
 }
 
