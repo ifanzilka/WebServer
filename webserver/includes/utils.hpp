@@ -5,5 +5,5 @@
 #include <iostream>
 
 std::string get_errno();
-
+int         get_errno_code();
 #endif 

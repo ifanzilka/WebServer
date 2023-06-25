@@ -7,7 +7,7 @@ INCLUDES = includes
 
 NAME_PROGRAMM = test
 
-SRCS = srcs/ServerApi.cpp srcs/WebServers.cpp srcs/HttpResponse.cpp
+SRCS = srcs/ServerApi.cpp srcs/WebServers.cpp srcs/HttpResponse.cpp srcs/utils.cpp
  #srcs/Socket.cpp srcs/utils.cpp
 
 SELECT_SRCS = srcs/ServerSelect.cpp
