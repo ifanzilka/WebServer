@@ -21,6 +21,7 @@ public:
 
     static std::string  MakeHTTPResponse(int status, const std::string& content_type, const std::string& body);
     static std::string  MakeHTTPResponse(int status, const std::string& content_type,  int size);
+    static int  SendHTTPResponse(int fd, int status, const std::string& content_type,  char *str);
     static int          SendHTTPResponseFile(int fd, int status, const std::string& content_type, const std::string& filename);
     
     static std::string  SendBytesHTTPResponse(int fd, const std::string& filename);

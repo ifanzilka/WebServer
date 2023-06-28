@@ -245,6 +245,14 @@ void WebServer::Start()
         {   
             //HttpResponse::SendHTTPResponseFile(reads_fd, 200, "image/jpeg", "resource/fera.jpeg");
             //HttpResponse::SendHTTPResponseFile(reads_fd, 200, "video/mp4", "resource/nyan.mp4");
+            
+            HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", START_PAGE);
+            // std::string res = HttpResponse::MakeHTTPResponse(200, "text/html", strlen(START_PAGE));
+
+            // _MainServer->SendInFd(reads_fd, res.c_str());
+            // _MainServer->SendInFd(reads_fd, START_PAGE);
+
+
             std::cout << "msg:\n" << _MainServer->_msg << "\n";
             // std::vector<std::string> lines = ft_split(_MainServer->_msg, "\r\n");
 

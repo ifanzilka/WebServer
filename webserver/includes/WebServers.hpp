@@ -1,6 +1,8 @@
 #ifndef IRCSERVER_HPP
 # define IRCSERVER_HPP
 
+#include "WebServHeaders.hpp"
+
 #include "ServerApi.hpp"
 #include <ServerPoll.hpp>
 #include <ServerSelect.hpp>

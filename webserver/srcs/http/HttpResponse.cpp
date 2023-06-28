@@ -33,6 +33,19 @@ std::string HttpResponse::MakeHTTPResponse(int status, const std::string& conten
 }
 
 
+int  HttpResponse::SendHTTPResponse(int fd, int status, const std::string& content_type,  char *str)
+{
+    std::ostringstream oss;
+    oss << "HTTP/1.1 " << status << " " << get_status_text(status) << "\r\n";
+    oss << "Content-Type: " << content_type << "\r\n";
+    oss << "Content-Length: " << strlen(str) << "\r\n";
+    oss << "\r\n";
+
+    std::string response_str = oss.str();
+    send_bytes_fd(fd, response_str.c_str(), strlen(response_str.c_str()));
+    send_bytes_fd(fd, str, strlen(str));
+    return (0);
+}
 
 int HttpResponse::SendHTTPResponseFile(int fd, int status, const std::string& content_type, const std::string& filename)
 {
