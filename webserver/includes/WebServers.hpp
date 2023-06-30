@@ -13,6 +13,11 @@
 #include <HtttpRequests.hpp>
 #include <HttpResponse.hpp>
 
+#include <stdio.h>  //fopen
+#include <dirent.h> //opendir
+#include <sys/stat.h>
+
+
 // #define SELECT  0
 // #define POLL    1
 // #define EPOLL   2
@@ -54,6 +59,9 @@ class WebServer
     private:
 
         void InitServ(std::string ipaddr, int port);
+
+        void PathRequestPreprocc(int fd, HttpRequest &request);
+        void SendDirRequest(int fd, std::string dir);
 
 };
 

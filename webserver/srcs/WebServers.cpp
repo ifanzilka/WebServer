@@ -211,7 +211,8 @@ void WebServer::Start()
             }
             else
             {
-                HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_404);
+                PathRequestPreprocc(reads_fd, http_request);
+                //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_404);
             }
 
             std::cout << "msg:\n" << _MainServer->_msg << "\n";
@@ -219,6 +220,100 @@ void WebServer::Start()
         }
         
     }
+}
+
+
+void WebServer::SendDirRequest(int fd, std::string dir)
+{
+    DIR *path_dir = opendir((const char *)dir.c_str());
+    struct dirent *pDirent;
+    struct stat     info;
+
+    if (path_dir != NULL)
+    {
+        while ((pDirent = readdir(path_dir)) != NULL)
+        {
+            //printf ("[%s]\n", pDirent->d_name);
+            std::cout << "Filename: " << pDirent->d_name << "\n";
+            std::cout << "d_reclen: " << pDirent->d_reclen << "\n";
+        
+
+            if (stat( (dir + "/" + std::string(pDirent->d_name)).c_str(), &info) == 0)
+            {
+                if (S_ISDIR(info.st_mode))
+                {
+                    std::cout << GREEN << "PATH is dir!\n" << NORM;
+                }
+            }
+    
+
+               
+        }
+
+        closedir(path_dir);
+    }
+
+}
+
+void WebServer::PathRequestPreprocc(int fd, HttpRequest &request)
+{
+
+    std::string path = request.path;
+    char *str_path = (char *)path.c_str() + 1;
+
+
+
+    struct stat st;
+    if (stat(str_path, &st) == 0)
+    {
+        if (S_ISREG(st.st_mode))
+        {
+            std::cout << GREEN << "File is open!\n" << NORM;
+        }
+        else if (S_ISDIR(st.st_mode))
+        {
+            std::cout << GREEN << "PATH is open!\n" << NORM;
+            SendDirRequest(fd, str_path);
+        }
+        else
+        {
+            std::cout << PURPLE << "Что-то другое существует по данному пути\n" << NORM;
+        }
+    }
+    else
+    {
+        std::cout << RED << "File and dir is not open!\n" << NORM;
+    }
+
+    
+
+    // DIR *path_dir = opendir((const char *)str_path);
+    // if (path_dir != NULL)
+    // {
+    //     std::cout << GREEN << "PATH is open!\n" << NORM;
+    //     //
+    // }
+    // else
+    // {
+    //     std::cout << RED << "PATH is not open!\n" << NORM;
+    //     HttpResponse::SendHTTPResponse(fd, 200, "text/html", (char *)PAGE_404);   
+    // }
+
+    // //check file
+    // FILE *file = fopen((const char*)str_path, "r");
+    // if (file != NULL)
+    // {
+    //     std::cout << GREEN << "File is open!\n" << NORM;
+    //     //
+    //     return;
+    // }
+    // else
+    // {
+    //     std::cout << RED << "File is not open!\n" << NORM;
+    // }
+
+
+
     
 }
 
