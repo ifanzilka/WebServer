@@ -2,7 +2,7 @@
 # define WEBSERVHEADER
 
 
-#define START_PAGE "<!DOCTYPE html>\
+#define PAGE_START "<!DOCTYPE html>\
 <html>\
 <head>\
 <title>Welcome to ifanzilka WebServ!</title>\

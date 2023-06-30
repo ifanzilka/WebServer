@@ -10,6 +10,9 @@
 #include <ServerEpoll.hpp>
 #include <utils.hpp>
 
+#include <HtttpRequests.hpp>
+#include <HttpResponse.hpp>
+
 // #define SELECT  0
 // #define POLL    1
 // #define EPOLL   2

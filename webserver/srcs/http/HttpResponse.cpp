@@ -23,8 +23,8 @@ std::string HttpResponse::MakeHTTPResponse(int status, const std::string& conten
 {
     std::ostringstream oss;
     oss << "HTTP/1.1 " << status << " " << get_status_text(status) << "\r\n";
-    oss << "Content-Type: " << content_type << "\r\n";
-    oss << "Content-Length: " << size << "\r\n";
+    set_header(oss, "Content-Type", content_type);
+    set_header(oss, "Content-Length", std::to_string(size));
     oss << "\r\n";
 
     std::string response_str = oss.str();
@@ -37,8 +37,10 @@ int  HttpResponse::SendHTTPResponse(int fd, int status, const std::string& conte
 {
     std::ostringstream oss;
     oss << "HTTP/1.1 " << status << " " << get_status_text(status) << "\r\n";
-    oss << "Content-Type: " << content_type << "\r\n";
-    oss << "Content-Length: " << strlen(str) << "\r\n";
+
+    set_header(oss, "Content-Type", content_type);
+    set_header(oss, "Content-Length", std::to_string(strlen(str)));
+    //set_header(oss, "Connection", "keep-alive");
     oss << "\r\n";
 
     std::string response_str = oss.str();
@@ -94,7 +96,7 @@ std::string HttpResponse::SendBytesHTTPResponse(int fd, const std::string& filen
     bytes = contents.str();
 
     send_bytes_fd(fd, bytes.c_str(), bytes.size());
-
+    return bytes;
 }
 
 int send_bytes_fd(int fd, const char *msg, int size)
