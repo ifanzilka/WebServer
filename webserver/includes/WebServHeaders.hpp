@@ -35,7 +35,7 @@ working. Further configuration is required.</p>\
 #define PAGE_STRUCTURE "<html>\
     <head><title>Index of /www/</title></head>\
     <body>\
-    <h1>Index of /www/</h1><hr><pre><a href="../">../</a>\
+    <h1>Index of /www/</h1><hr><pre><a href=\"..\">../</a>\
     <a href=\"123/\">123/</a>                                               29-Jun-2023 18:08                   -\
     <a href=\"1\">1</a>                                                  28-Jun-2023 21:21                   0\
     <a href=\"2\">2</a>                                                  28-Jun-2023 21:21                   0\

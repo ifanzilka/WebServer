@@ -225,6 +225,13 @@ void WebServer::Start()
 
 void WebServer::SendDirRequest(int fd, std::string dir)
 {
+    std::string html_path = "<html>\
+    <head><title>Index of /www/</title></head>\
+    <body>\
+    <h1>Index of " + dir + "</h1><hr><pre><a href=\"..\">../</a>\n";
+
+    std::cout << "html_path: "<< html_path << "\n";
+
     DIR *path_dir = opendir((const char *)dir.c_str());
     struct dirent *pDirent;
     struct stat     info;
@@ -237,12 +244,19 @@ void WebServer::SendDirRequest(int fd, std::string dir)
             std::cout << "Filename: " << pDirent->d_name << "\n";
             std::cout << "d_reclen: " << pDirent->d_reclen << "\n";
         
+            if (std::string(pDirent->d_name) == ".." || std::string(pDirent->d_name) == ".")
+                continue;
 
             if (stat( (dir + "/" + std::string(pDirent->d_name)).c_str(), &info) == 0)
             {
                 if (S_ISDIR(info.st_mode))
                 {
                     std::cout << GREEN << "PATH is dir!\n" << NORM;
+                    html_path += "<a href=\"" + std::string(pDirent->d_name)  + "/\">" + std::string(pDirent->d_name)  + "/</a>\t\t\t"+"-\n";
+                }
+                else
+                {
+                    html_path += "<a href=\"" + std::string(pDirent->d_name)  + "\">" + std::string(pDirent->d_name)  + "</a>\t\t\t" +  std::to_string((int)info.st_size) +"\n";
                 }
             }
     
@@ -252,6 +266,9 @@ void WebServer::SendDirRequest(int fd, std::string dir)
 
         closedir(path_dir);
     }
+
+    html_path += "</pre><hr></body></html>";
+    HttpResponse::SendHTTPResponse(fd, 200, "text/html", (char*)html_path.c_str());
 
 }
 
