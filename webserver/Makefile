@@ -5,7 +5,7 @@ CPPFLAGS = #-Wall -Wextra -Werror #-std=c++98
 
 INCLUDES = includes
 
-NAME_PROGRAMM = test
+NAME_PROGRAMM = WebServer
 
 SRCS = srcs/server_kernel/ServerApi.cpp srcs/WebServers.cpp srcs/http/HttpResponse.cpp srcs/utils.cpp
  #srcs/Socket.cpp srcs/utils.cpp
@@ -46,6 +46,8 @@ REV			= \x1b[7m
 
 MAIN_TEST = test_main.cpp
 
+all:
+	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS) $(KQUEUE_SRCS) $(MAIN_TEST) -D KQUEUE -o $(NAME_PROGRAMM)
 test:
 	$(CXX) $(CPPFLAGS) -I$(INCLUDES) $(SRCS)  test_main.cpp -o $(NAME_PROGRAMM)
 

@@ -47,6 +47,8 @@ void WebServer::InitServ( std::string ipaddr, int port)
     //_MainServer = new ServerPoll(ipaddr, port);
     // _MainServer = new ServerKqueue(ipaddr, port);
     // _MainServer = new ServerEpoll(ipaddr, port);
+    autoindex = true;
+    location = "/Users/ifanzilka/Desktop/Servers/serv2/webserver";
 
     #if defined(SELECT)
         _MainServer = new ServerSelect(ipaddr, port);
@@ -179,11 +181,6 @@ void WebServer::Start()
             continue;
         }
             
-        std::string body("<html>\
-                <body>\
-                <h1>Hello, World!</h1>\
-                </body>\
-                </html>");
 
 
         reads_fd = this->CheckAndRead();
@@ -203,7 +200,18 @@ void WebServer::Start()
 
             if (http_request.path == "/")
             {
-                HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
+                
+                if (WebServer::autoindex == true)
+                {
+                    WebServer::SendDirRequest(reads_fd, WebServer::location  + std::string("/"));
+                    //WebServer::SendDirRequest(reads_fd, "./");
+                }
+                else
+                {
+                    HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
+                }
+               
+                //
             }
             else if (http_request.path == "/favicon.ico")
             {
@@ -211,6 +219,7 @@ void WebServer::Start()
             }
             else
             {
+
                 PathRequestPreprocc(reads_fd, http_request);
                 //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_404);
             }
@@ -241,8 +250,8 @@ void WebServer::SendDirRequest(int fd, std::string dir)
         while ((pDirent = readdir(path_dir)) != NULL)
         {
             //printf ("[%s]\n", pDirent->d_name);
-            std::cout << "Filename: " << pDirent->d_name << "\n";
-            std::cout << "d_reclen: " << pDirent->d_reclen << "\n";
+            // std::cout << "Filename: " << pDirent->d_name << "\n";
+            // std::cout << "d_reclen: " << pDirent->d_reclen << "\n";
         
             if (std::string(pDirent->d_name) == ".." || std::string(pDirent->d_name) == ".")
                 continue;
@@ -275,21 +284,23 @@ void WebServer::SendDirRequest(int fd, std::string dir)
 void WebServer::PathRequestPreprocc(int fd, HttpRequest &request)
 {
 
-    std::string path = request.path;
-    char *str_path = (char *)path.c_str() + 1;
+    std::string path = WebServer::location +  request.path;
+    char *str_path = (char *)path.c_str();
 
 
-
+    //std::cout << GREEN << str_path << NORM <<std::endl; // path in filesystem
     struct stat st;
     if (stat(str_path, &st) == 0)
     {
         if (S_ISREG(st.st_mode))
         {
-            std::cout << GREEN << "File is open!\n" << NORM;
+            //file send
+            HttpResponse::SendHTTPResponseFile(fd, 200, "multipart/form-data", path);
+
         }
         else if (S_ISDIR(st.st_mode))
         {
-            std::cout << GREEN << "PATH is open!\n" << NORM;
+            //path send
             SendDirRequest(fd, str_path);
         }
         else

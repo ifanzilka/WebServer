@@ -50,6 +50,9 @@ class WebServer
         int     SendInFd(int fd, char* msg, int size);
         void    Start();
 
+        bool        autoindex;
+        std::string location;
+
         
     protected:
 
