@@ -65,6 +65,7 @@ class WebServer
 
         void PathRequestPreprocc(int fd, HttpRequest &request);
         void SendDirRequest(int fd, std::string dir);
+        void PreproccGetRequest(HttpRequestParser &parser, int reads_fd);
 
 };
 

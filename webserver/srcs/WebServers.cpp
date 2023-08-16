@@ -186,6 +186,8 @@ void WebServer::Start()
         reads_fd = this->CheckAndRead();
         if (reads_fd > 1)
         {   
+
+            std::cout << "Message: " << _MainServer->_msg << std::endl;
             HttpRequestParser parser;
             HttpRequest http_request = parser.parse(_MainServer->_msg);
             
@@ -197,32 +199,30 @@ void WebServer::Start()
                 std::cout << "  " << http_request.headers[i] << std::endl;
             }
             std::cout << "Body: " << http_request.body << std::endl;
-
-            if (http_request.path == "/")
+            
+            if (http_request.method == "GET")
             {
+                WebServer::PreproccGetRequest(parser, reads_fd);
+            }
+            else if (http_request.method == "POST")
+            {
+                std::cout << "Post request";
                 
-                if (WebServer::autoindex == true)
-                {
-                    WebServer::SendDirRequest(reads_fd, WebServer::location  + std::string("/"));
-                    //WebServer::SendDirRequest(reads_fd, "./");
-                }
-                else
-                {
-                    HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
-                }
-               
-                //
-            }
-            else if (http_request.path == "/favicon.ico")
-            {
-                HttpResponse::SendHTTPResponseFile(reads_fd, 200, "image/x-icon", "resource/favicon.ico");
-            }
-            else
-            {
+                // std::string response = "HTTP/1.1 200 OK\r\nContent-Type: text\r\nContent-Length: 5\r\n\r\nHello";
+                // send(reads_fd, response.c_str(), response.length(), 0);
 
-                PathRequestPreprocc(reads_fd, http_request);
-                //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_404);
+                //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 5\r\n\r\nHello";
+                //send(reads_fd, response, std::strlen(response), 0);
+
+                // const char *response = "HTTP/1.1 400 Bad Request\r\nContent-Length: 12\r\n\r\nInvalid request";
+                // send(reads_fd, response, std::strlen(response), 0);
+                //std::cout << "YES SEND\n";
+
+                
+                
+                //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
             }
+
 
             std::cout << "msg:\n" << _MainServer->_msg << "\n";
             events--;
@@ -231,6 +231,38 @@ void WebServer::Start()
     }
 }
 
+
+void WebServer::PreproccGetRequest(HttpRequestParser &parser, int reads_fd)
+{
+    HttpRequest http_request = parser.parse(_MainServer->_msg);
+
+    if (http_request.path == "/")
+    {
+        
+        if (WebServer::autoindex == true)
+        {
+            WebServer::SendDirRequest(reads_fd, WebServer::location  + std::string("/"));
+            //WebServer::SendDirRequest(reads_fd, "./");
+        }
+        else
+        {
+            HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
+        }
+        
+        //
+    }
+    else if (http_request.path == "/favicon.ico")
+    {
+        HttpResponse::SendHTTPResponseFile(reads_fd, 200, "image/x-icon", "resource/favicon.ico");
+    }
+    else
+    {
+
+        PathRequestPreprocc(reads_fd, http_request);
+        //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_404);
+    }
+
+}
 
 void WebServer::SendDirRequest(int fd, std::string dir)
 {
@@ -269,8 +301,6 @@ void WebServer::SendDirRequest(int fd, std::string dir)
                 }
             }
     
-
-               
         }
 
         closedir(path_dir);

@@ -175,7 +175,7 @@ int AbstractServerApi::ReadInFd(int fd)
 		}
 		Logger(GREEN, "Read in  " + std::to_string(fd) + " fd");
 		Logger(GREEN, "Data is read is " + std::to_string(_msg.size()) + " bytes  ✅ ");
-		Logger(B_GRAY, "\n" + _msg);
+		Logger(B_GRAY, "\n!" + _msg + "!\n" + NORM);
 			//_msg = ""; 
 			
 			//AbstractServerApi::SendInFd(fd, "Message Sucsefull\n", 18);
