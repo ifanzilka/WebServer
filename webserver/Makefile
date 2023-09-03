@@ -68,6 +68,7 @@ clean:
 
 fclean:
 	rm -rf $(NAME_PROGRAMM)
+	rm *log.txt
 	@echo "$(GREEN)Delete $(NAME_PROGRAMM) FCleaned! $(END)"
 
 re: fclean test
