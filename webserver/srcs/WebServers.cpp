@@ -194,7 +194,7 @@ void WebServer::Start()
             
 
         disconnect = this->CheckDisconnect();
-        std::cout << "disconnect <<" << disconnect <<"\n";
+        
         if (disconnect > 0)
         {
             events--;
@@ -242,8 +242,8 @@ void WebServer::Start()
 
                 if (_MainServer->_msg.length() == 0)
                 {
-                    std::string responseData = "Resource created";
-                    sendResponse(reads_fd, responseData);
+                    //std::string responseData = "Resource created";
+                    //sendResponse(reads_fd, responseData);
 
                     // const char *response = "HTTP/1.1 201\r\nCreated\r\nContent-Length: 0\r\n";
                     // send_bytes_fd(reads_fd, response, std::strlen(response));
@@ -257,22 +257,29 @@ void WebServer::Start()
                 {
                     //std::cout << "!" << i << "!" << lines[i] << "!\n";
                     
-                    // if (lines[i] == "0")
-                    // {
-                    //     std::cout << "end chunked\n";
+                    if (lines[i] == "0")
+                    {
+                        std::cout << "end chunked\n";
 
 
-                    //     //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n";
-                    //     //send_bytes_fd(reads_fd, response, strlen(response));
+                        //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n";
+                        //send_bytes_fd(reads_fd, response, strlen(response));
 
-                    //     const char *response = "HTTP/1.1 201\r\nCreated\r\nContent-Length: 0\r\n";
-                    //     send_bytes_fd(reads_fd, response, std::strlen(response));
-                    //     break;
-                    // }
-                    // else
-                    // {
+                        HttpRequestParser parser;
+                        HttpRequest http_request = parser.parse(WebServer::_ChunkedBuffer[reads_fd]);
+                        
+                        std::cout << "Method: " << http_request.method << std::endl;
+                        std::cout << "Path: " << http_request.path << std::endl;
+
+                        std::string responseData = "Resource created";
+                        sendResponse(reads_fd, responseData);
+                        events--;
+                        break;
+                    }
+                    else
+                    {
                         WebServer::_ChunkedBuffer[reads_fd] += lines[i];
-                    //}
+                    }
                 }
                 continue;
 
@@ -316,7 +323,17 @@ void WebServer::Start()
                     {
                         _ChunkedBuffer[reads_fd] = _MainServer->_msg;
                         std::cout << "!1" <<  _ChunkedBuffer[reads_fd] << "!\n";
+
+
+
                     }
+
+                        HttpRequestParser parser;
+                        HttpRequest http_request = parser.parse(_MainServer->_msg);
+                
+                std::cout << "Method: " << http_request.method << std::endl;
+
+
 
                     if ( _MainServer->_msg.length() >= 2 && _ChunkedBuffer[reads_fd].substr(_MainServer->_msg.length() - 2, _MainServer->_msg.length()) == std::string("\r\n"))
                     {
@@ -325,6 +342,9 @@ void WebServer::Start()
                     else
                     {
                         //_ChunkedBuffer[reads_fd] = _MainServer->_msg;
+
+
+
                         std::cout << "False text\n";
                         continue;
                     }

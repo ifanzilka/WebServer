@@ -219,6 +219,13 @@
 		{
 			client_fd = _evList[i].ident;
 
+			
+			if (_evList[i].filter == EVFILT_WRITE)
+			{
+				std::cout << "EVFILT_WRITE" << "\n";
+				return(client_fd);
+			}
+
 			if (_evList[i].filter == EVFILT_READ)
 			{
 				res = AbstractServerApi::ReadInFd(client_fd);

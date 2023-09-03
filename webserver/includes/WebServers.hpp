@@ -61,6 +61,7 @@ class WebServer
         std::map<int, std::string>  _ChunkedBuffer;
         std::map<int, std::string>  _ChunkedBufferPost;
         std::map<int, std::string>  _ChunkedBufferPut;
+        std::map<int, std::string>  _HttpRequestInfo;
 
     private:
 

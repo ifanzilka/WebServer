@@ -143,9 +143,13 @@ int AbstractServerApi::ReadInFd(int fd)
 	int ret = recv(fd, buffer, RECV_BUFFER_SIZE - 1, 0);
 	if (ret == 0)
 	{
-		/* Api poll*/
-		Logger(RED, "Disconnect fd(" + std::to_string(fd) + ") ❌ ");
-		Logger(B_GRAY, "Remove fd " + std::to_string(fd));
+		
+		#if defined(POLL)
+
+			/* Api poll*/
+			Logger(RED, "Disconnect fd(" + std::to_string(fd) + ") ❌ ");
+			Logger(B_GRAY, "Remove fd " + std::to_string(fd));
+		#endif
 		return (0);
 	}
 	else
