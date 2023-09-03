@@ -113,7 +113,7 @@ int send_bytes_fd(int fd, const char *msg, int size)
     while (sended < len_msg)
     {
         res_send = send(fd, c_msg, BUFFER_LEN , 0);
-        std::cout << "\r" << ((sended / 1024.0) / 1024.0)  << " MB";
+        std::cout << "\r" << ((sended / 1024.0) / 1024.0)  << " MB\n";
         if (res_send == -1)
         {
             

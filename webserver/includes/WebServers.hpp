@@ -58,6 +58,7 @@ class WebServer
 
         /* Главный сервер для работы с сокетами */
         AbstractServerApi           *_MainServer;
+        std::map<int, std::string>  _ChunkedBufferAll;
         std::map<int, std::string>  _ChunkedBuffer;
         std::map<int, std::string>  _ChunkedBufferPost;
         std::map<int, std::string>  _ChunkedBufferPut;
