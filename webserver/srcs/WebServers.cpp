@@ -170,6 +170,16 @@ void sendResponse(int clientSocket, const std::string& responseData) {
     //close(clientSocket);
 }
 
+long long	ft_gettime(void)
+{
+	struct timeval	tp;
+	long long		time;
+
+	gettimeofday(&tp, NULL);
+	time = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+	return (time);
+}
+
 
 void WebServer::Start()
 {
@@ -206,369 +216,128 @@ void WebServer::Start()
 
         reads_fd = this->CheckAndRead();
         if (reads_fd > 1)
-        {   
+        {
 
 
-            
-
-
-
-
-
-
-            // if (_ChunkedBufferPost.find(reads_fd) != _ChunkedBufferPost.end())
-            // {
-            //     std::vector<std::string> lines = ft_split(_MainServer->_msg, "\r\n");
-
-            //     std::cout << "Parse Chunked\n";
-            //     for (int i = 0; i < lines.size(); i++)
-            //     {
-            //         //std::cout << "!" << i << "!" << lines[i] << "!\n";
-                    
-            //         if (lines[i] == "0")
-            //         {
-            //             std::cout << "end chunked\n";
-
-
-            //             //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n";
-            //             //send_bytes_fd(reads_fd, response, strlen(response));
-
-            //             const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Length: 12\r\n\r\nInvalid request";
-            //             send_bytes_fd(reads_fd, response, std::strlen(response));
-            //             break;
-            //         }
-            //         else
-            //         {
-            //             WebServer::_ChunkedBuffer[reads_fd] += lines[i];
-            //         }
-            //     }
-
-            // }
-            // if (_ChunkedBufferPut.find(reads_fd) != _ChunkedBufferPut.end())
-            // {
-
-            //     if (_MainServer->_msg.length() == 0)
-            //     {
-            //         //std::string responseData = "Resource created";
-            //         //sendResponse(reads_fd, responseData);
-
-            //         // const char *response = "HTTP/1.1 201\r\nCreated\r\nContent-Length: 0\r\n";
-            //         // send_bytes_fd(reads_fd, response, std::strlen(response));
-            //         continue;
-            //     }
-
-            //     std::vector<std::string> lines = ft_split(_MainServer->_msg, "\r\n");
-
-            //     std::cout << "Parse Chunked\n";
-            //     for (int i = 0; i < lines.size(); i++)
-            //     {
-            //         //std::cout << "!" << i << "!" << lines[i] << "!\n";
-                    
-            //         if (lines[i] == "0")
-            //         {
-            //             std::cout << "end chunked\n";
-
-
-            //             //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n";
-            //             //send_bytes_fd(reads_fd, response, strlen(response));
-
-            //             HttpRequestParser parser;
-            //             HttpRequest http_request = parser.parse(WebServer::_ChunkedBuffer[reads_fd]);
-                        
-            //             std::cout << "Method: " << http_request.method << std::endl;
-            //             std::cout << "Path: " << http_request.path << std::endl;
-
-            //             std::string responseData = "Resource created";
-            //             sendResponse(reads_fd, responseData);
-            //             events--;
-            //             break;
-            //         }
-            //         else
-            //         {
-            //             WebServer::_ChunkedBuffer[reads_fd] += lines[i];
-            //         }
-            //     }
-            //     continue;
-
-            // }
-
-
-            // if (false)
-            // {
-            //     std::cout << "False\n";
-            // }
-            // else
-            // {
-        
-            //     if (_MainServer->_msg.length() >= 2 && _MainServer->_msg.substr(_MainServer->_msg.length() - 2, _MainServer->_msg.length()) == std::string("\r\n"))
-            //     {
-                    
-            //         if (_ChunkedBuffer.find(reads_fd) != _ChunkedBuffer.end())
-            //         {
-            //             _ChunkedBuffer[reads_fd] += _MainServer->_msg;
-            //         }
-            //         else
-            //         {
-            //             _ChunkedBuffer[reads_fd] = _MainServer->_msg;   
-            //         }
-            //         std::cout << "!_ChunkedBuffer[reads_fd]: " << _ChunkedBuffer[reads_fd] << "!" << std::endl;
-            //         _MainServer->_msg = _ChunkedBuffer[reads_fd];
-            //         std::cout << "True text\n";
-            //     }
-            //     else if ( _MainServer->_msg.length() != 0)
-            //     {
-
-            //         std::cout << "len: " << _MainServer->_msg.length() << "\n";
-
-
-            //         if (_ChunkedBuffer.find(reads_fd) != _ChunkedBuffer.end())
-            //         {
-            //             _ChunkedBuffer[reads_fd] += _MainServer->_msg;
-            //             std::cout << "!2" <<  _ChunkedBuffer[reads_fd] << "!\n";
-            //         }
-            //         else
-            //         {
-            //             _ChunkedBuffer[reads_fd] = _MainServer->_msg;
-            //             std::cout << "!1" <<  _ChunkedBuffer[reads_fd] << "!\n";
-
-
-
-            //         }
-
-            //             HttpRequestParser parser;
-            //             HttpRequest http_request = parser.parse(_MainServer->_msg);
-                
-            //             std::cout << "Method: " << http_request.method << std::endl;
-
-
-
-            //         if ( _MainServer->_msg.length() >= 2 && _ChunkedBuffer[reads_fd].substr(_MainServer->_msg.length() - 2, _MainServer->_msg.length()) == std::string("\r\n"))
-            //         {
-
-            //         }
-            //         else
-            //         {
-            //             //_ChunkedBuffer[reads_fd] = _MainServer->_msg;
-
-
-
-            //             std::cout << "False text\n";
-            //             continue;
-            //         }
-
-            //     }
-            //     _MainServer->_msg = _ChunkedBuffer[reads_fd];
-                //std::cout << "Substring: "<< _MainServer->_msg.substr(_MainServer->_msg.length() - 2, _MainServer->_msg.length()) << std::endl;
-
-                std::string message_request = "";
-                bool true_text = false;
-                //Если уже считывалти с этого fd
-                if (_ChunkedBufferAll.find(reads_fd) != _ChunkedBufferAll.end())
-                {
-                    //std::cout << "!_ChunkedBufferAll[reads_fd]!" << _ChunkedBufferAll[reads_fd] << "!!\n";
-                    _ChunkedBufferAll[reads_fd] += _MainServer->_msg;
-                    //std::cout << "!_ChunkedBufferAll[reads_fd]!" << _ChunkedBufferAll[reads_fd] << "!!\n";
-                    if (_ChunkedBufferAll[reads_fd].length() >= 2 && _ChunkedBufferAll[reads_fd].substr(_ChunkedBufferAll[reads_fd].length() - 2, _ChunkedBufferAll[reads_fd].length()) == std::string("\r\n"))
-                    {
-                        true_text = true;
-                        message_request = _ChunkedBufferAll[reads_fd];
-                        std::cout << "True text parsing...\n!"<< message_request <<"!\n";
-                    }
-                    else
-                    {
-                        std::cout << "false text wait...\n";
-                    }
-                    
-                }
-                else
-                {
-                    if (_MainServer->_msg.length() >= 4 && _MainServer->_msg.substr(_MainServer->_msg.length() - 4, _MainServer->_msg.length()) == std::string("\r\n\r\n"))
-                    {
-                        //Cообщение пришло до конца
-                        _ChunkedBufferAll[reads_fd] =  _MainServer->_msg;
-                        message_request =  _ChunkedBufferAll[reads_fd];
-                        std::cout << "True text parsing...\n!"<< message_request <<"!\n";
-                        true_text = true;
-
-                    }
-                    else
-                    {
-                        _ChunkedBufferAll[reads_fd] = _MainServer->_msg;
-                        std::cout << "false text wait...\n";
-                    }
-                }
-
-
-                if (true_text)
-                {
-                    HttpRequestParser parser;
-                    HttpRequest http_request = parser.parse(message_request);
-
-                    _MainServer->_msg = message_request;
-                    std::cout << "Method: " << http_request.method << std::endl;
-                    std::cout << "Path: " << http_request.path << std::endl;
-                    std::cout << "Version: " << http_request.version << std::endl;
-                    std::cout << "Headers: " << std::endl;
-
-                    for (int i = 0; i < http_request.headers.size(); i++)
-                    {
-                        std::cout << "Head: " << http_request.headers[i] << std::endl;
-
-                    }
-                    std::cout << "Body: " << http_request.body << std::endl;
-
-
-                    if (http_request.method == "GET") //получение чего либо
-                    {
-                        WebServer::PreproccGetRequest(parser, reads_fd);
-                        _ChunkedBufferAll[reads_fd] = "";
-                        _ChunkedBufferAll.erase(reads_fd);
-
-                    }
-                    else if (http_request.method == "POST") //отправки данных на сервер
-                    {
-
-                        if (_ChunkedBufferPost.find(reads_fd) != _ChunkedBufferPost.end())
-                        {
-                            std::vector<std::string> lines = ft_split(_MainServer->_msg, "\r\n");
-                            
-
-                            std::cout << "Parse Chunked\n";
-                            for (int i = 0; i < lines.size(); i++)
-                            {
-                                
-                                if (lines[i] == "0" || http_request.body == "0")
-                                {
-                                    std::cout << "end chunked\n";
-
-                                    const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Length: 12\r\n\r\nInvalid request";
-                                    send_bytes_fd(reads_fd, response, std::strlen(response));
-                                    _ChunkedBufferPost[reads_fd] = "";
-                                    break;
-                                }
-                                else
-                                {
-                                    WebServer::_ChunkedBufferPost[reads_fd] += lines[i];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            _ChunkedBufferPost[reads_fd] = "";
-                        }
-
-                    }
-                    else if (http_request.method == "HEAD")//запрашивает заголовки
-                    {
-                        const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Type: text/html\r\nContent-Length: 0\r\n\r\n";
-                        send(reads_fd, response, std::strlen(response), 0);
-                        // _ChunkedBufferAll[reads_fd] = "";
-                        _ChunkedBufferAll.erase(reads_fd);
-
-                    }
-                    else if (http_request.method == "PUT")
-                    {
-                        std::string responseData = "Resource created";
-                        sendResponse(reads_fd, responseData);
-                        _ChunkedBufferPost[reads_fd] = "";
-                    }
-
-
-                }
-
-
-                events--;
-                continue;
-
-
-                std::cout << "!Main message: " << _MainServer->_msg << "!" << std::endl;
+            if (_ChunkedBufferAll.find(reads_fd) == _ChunkedBufferAll.end())
+            {
+                _ChunkedBufferAll[reads_fd] = _MainServer->_msg;
+            }
+            else
+            {
+                _ChunkedBufferAll[reads_fd] += _MainServer->_msg;
+            }
+            if (_ChunkedBufferAll[reads_fd].length() > 4 && _ChunkedBufferAll[reads_fd].substr(_ChunkedBufferAll[reads_fd].length() - 4, _ChunkedBufferAll[reads_fd].length()) == std::string("\r\n\r\n"))
+            {
+                std::cout << "All Msg Parsing...\n";
+                std::cout << _ChunkedBufferAll[reads_fd];
 
                 HttpRequestParser parser;
-                HttpRequest http_request = parser.parse(_MainServer->_msg);
-                
+                HttpRequest http_request = parser.parse(_ChunkedBufferAll[reads_fd]);
+
+                _MainServer->_msg = _ChunkedBufferAll[reads_fd];
                 std::cout << "Method: " << http_request.method << std::endl;
                 std::cout << "Path: " << http_request.path << std::endl;
                 std::cout << "Version: " << http_request.version << std::endl;
                 std::cout << "Headers: " << std::endl;
-                for (int i = 0; i < http_request.headers.size(); i++) {
-                    std::cout << "::  " << http_request.headers[i] << std::endl;
-                    
-                    if (std::string::npos != http_request.headers[i].find("chunked"))
-                    {
-                        if (http_request.method == "POST")
-                        {
-                            _ChunkedBufferPost[reads_fd] = std::string("");
-                        }
-                        else if (http_request.method == "PUT")
-                        {
-                            _ChunkedBufferPut[reads_fd] = std::string("");
-                        }
-                        //This request chunked
-                        
-                    }
-                    
+
+
+                bool transfer_encoding = false;
+                for (int i = 0; i < http_request.headers.size(); i++)
+                {
+                    std::cout << "Head: " << http_request.headers[i] << std::endl;
+                   
+                    size_t		nFind;
+                    nFind = http_request.headers[i].find("Transfer-Encoding: chunked");
+                    if (nFind != std::string::npos)
+                        transfer_encoding = true;
+
                 }
+                std::cout << "transfer_encoding " << transfer_encoding <<"\n";
                 std::cout << "Body: " << http_request.body << std::endl;
-                if (http_request.method == "GET")
+
+
+                if (http_request.method == "GET") //получение чего либо
                 {
                     WebServer::PreproccGetRequest(parser, reads_fd);
+                    _ChunkedBufferAll[reads_fd] = "";
+                    _ChunkedBufferAll.erase(reads_fd);
+
                 }
-                else if (http_request.method == "POST")
+                else if (http_request.method == "POST") //отправки данных на сервер
                 {
-                        // std::cout << "Post request";
+
                     
-
-                        // std::vector<std::string> lines = ft_split(_MainServer->_msg, "\r\n");
-
-                        // std::cout << "Parse Chunked\n";
-                        // for (int i = 0; i < lines.size(); i++)
-                        // {
-                        //     //std::cout << "!" << i << "!" << lines[i] << "!\n";
+                    if (transfer_encoding)
+                    {
+                        if ( _ChunkedBufferAll[reads_fd].length() > 5 &&  _ChunkedBufferAll[reads_fd].substr(_ChunkedBufferAll[reads_fd].length() - 5, _ChunkedBufferAll[reads_fd].length()) == std::string("0\r\n\r\n"))
+                        {
                             
-                        //     if (lines[i] == "0")
-                        //     {
-                        //         std::cout << "end chunked\n";
+                            std::cout << "Chunked end parsing2\n";
+                            
+                            if (http_request.path == "/")
+                            {
+                                std::cout << 1 << "\n";
+                                const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Length: 12\r\n\r\nInvalid request";
+                                send_bytes_fd(reads_fd, response, std::strlen(response));
+                            }
+                            else
+                            {
+                                std::cout << 2 << "\n";
+                                const char* response = "HTTP/1.1 200 OK\r\n"
+                               "Content-Type: text/plain\r\n"
+                               "Content-Length: 7\r\n"
+                               "\r\n"
+                               "Success";
+
+                                send(reads_fd, response, strlen(response), 0);
+
+                            }
+                             _ChunkedBufferAll.erase(reads_fd);
+                        }
+                        else
+                        {
+                            std::cout << "Wait chunked";
+                        }
+
+                    }
+    
 
 
-                        //         //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 0\r\n\r\n";
-                        //         //send_bytes_fd(reads_fd, response, strlen(response));
-
-                        //         const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Length: 12\r\n\r\nInvalid request";
-                        //         send_bytes_fd(reads_fd, response, std::strlen(response));
-                        //         break;
-                        //     }
-                        //     else
-                        //     {
-                        //         WebServer::_ChunkedBuffer[reads_fd] += lines[i];
-                        //     }
-                        // }
-
-                    
-
-
-                    // std::string response = "HTTP/1.1 200 OK\r\nContent-Type: text\r\nContent-Length: 5\r\n\r\nHello";
-                    // send(reads_fd, response.c_str(), response.length(), 0);
-
-                    //const char *response = "HTTP/1.1 201 Created\r\nContent-Length: 5\r\n\r\nHello";
-                    //send(reads_fd, response, std::strlen(response), 0);
-
-                    // const char *response = "HTTP/1.1 400 Bad Request\r\nContent-Length: 12\r\n\r\nInvalid request";
-                    // send(reads_fd, response, std::strlen(response), 0);
-                    //std::cout << "YES SEND\n";
-
-                    
-                    
-                    //HttpResponse::SendHTTPResponse(reads_fd, 200, "text/html", (char *)PAGE_START);
                 }
-                else if (http_request.method == "HEAD")
+                else if (http_request.method == "HEAD")//запрашивает заголовки
                 {
+
                     const char *response = "HTTP/1.1 405  Method Not Allowed\r\nContent-Type: text/html\r\nContent-Length: 0\r\n\r\n";
                     send(reads_fd, response, std::strlen(response), 0);
-
+                    // _ChunkedBufferAll[reads_fd] = "";
+                    _ChunkedBufferAll.erase(reads_fd);
+                
                 }
+                else if (http_request.method == "PUT")//запрашивает заголовки
+                {
+                        
+                    if ( _ChunkedBufferAll[reads_fd].length() > 5 &&  _ChunkedBufferAll[reads_fd].substr(_ChunkedBufferAll[reads_fd].length() - 5, _ChunkedBufferAll[reads_fd].length()) == std::string("0\r\n\r\n"))
+                    {
+                        std::cout << "Chunked end parsing1n";
+
+                        std::string responseData = "Resource created";
+                        sendResponse(reads_fd, responseData);
+                        _ChunkedBufferAll.erase(reads_fd);
+                    }
+                    else
+                    {
+                        std::cout << "Wait chunked";
+                    }
+                
+                }
+            }
+
+
+
 
             }
-            _ChunkedBuffer.erase(reads_fd);
+            //_ChunkedBuffer.erase(reads_fd);
             events--;
         
         

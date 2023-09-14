@@ -231,8 +231,11 @@
 				res = AbstractServerApi::ReadInFd(client_fd);
 				//AbstractServerApi::SendInFd(client_fd, std::string("Sucsess in read\n"));
 				//event_flag = EVFILT_READ;
-
-				return(client_fd);
+				
+				if (res > 0)
+					return(client_fd);
+				return (0);
+				
 				//return (res);
 			}
 			

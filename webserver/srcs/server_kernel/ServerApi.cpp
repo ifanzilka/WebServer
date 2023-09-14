@@ -141,6 +141,7 @@ int AbstractServerApi::ReadInFd(int fd)
 	bzero(buffer, RECV_BUFFER_SIZE);
 
 	int ret = recv(fd, buffer, RECV_BUFFER_SIZE - 1, 0);
+
 	if (ret == 0)
 	{
 		
@@ -150,6 +151,10 @@ int AbstractServerApi::ReadInFd(int fd)
 			Logger(RED, "Disconnect fd(" + std::to_string(fd) + ") ❌ ");
 			Logger(B_GRAY, "Remove fd " + std::to_string(fd));
 		#endif
+		return (0);
+	}
+	else if (ret == -1)
+	{
 		return (0);
 	}
 	else
